@@ -24,7 +24,7 @@
            Request::route()->getName() === 'admin.categories.show' ||
            Request::route()->getName() === 'admin.categories.create' ? 'active' : '' 
           }}">
-          <a href="admin.categories.index" class="nav-link"><i data-feather="monitor"></i><span>Categories</span></a>
+          <a href="{{ route('admin.categories.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Categories</span></a>
         </li>
         <li class="dropdown 
         {{ Request::route()->getName() === 'admin.products.index' || 
@@ -32,7 +32,7 @@
            Request::route()->getName() === 'admin.products.show' ||
            Request::route()->getName() === 'admin.products.create' ? 'active' : '' 
           }}">
-          <a href="admin.products.index" class="nav-link"><i data-feather="monitor"></i><span>Products</span></a>
+          <a href="{{ route('admin.products.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Products</span></a>
         </li>
         {{-- <li class="dropdown">
             <a href="{{ route('admin.tags.index') }}" class="nav-link"><i data-feather="monitor"></i><span>Products</span></a>

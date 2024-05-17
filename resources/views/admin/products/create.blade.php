@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Create page
+    Create product
 @endsection
 
 @section('css')
@@ -14,11 +14,11 @@
     <div class="row">
         
         <div class="col-12 col-md-12 col-lg-12">
-            <form action="{{ route('admin.pages.store') }}" method="POST">
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
             @csrf 
             <div class="card">
               <div class="card-header">
-                <h4>Create page</h4>
+                <h4>Create product</h4>
               </div>
               <div class="card-body">
                 <div class="form-group">
@@ -26,6 +26,11 @@
                   <input type="text" name="title" class="form-control @error('title')  is-invalid @enderror">
                   @error('title') <div class="invalid-feedback"> {{ $message }} </div> @enderror
                 </div>
+                <div class="form-group">
+                  <label>Image</label>
+                  <input type="file" name="image" class="form-control @error('image')  is-invalid @enderror">
+                  @error('image') <div class="invalid-feedback"> {{ $message }} </div> @enderror
+                  </div> 
                 <div class="form-group">
                   <label for="short_description">Short description:</label>
                   <textarea id="short_description" name="short_description" class="form-control @error('short_description') is-invalid @enderror"></textarea>
