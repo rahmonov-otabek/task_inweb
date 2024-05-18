@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group">
                       <label>Category</label>
-                      <select name="category_id" id="" class="form-control" style="padding: 0px">
+                      <select name="category_id" id="" class="form-control @error('category_id')  is-invalid @enderror" style="padding: 0px">
                           @foreach ($categories as $category)
                               <option {{ $product->category_id==$category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->title }}</option>
                           @endforeach

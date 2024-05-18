@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group">
                   <label>Category</label>
-                  <select name="category_id" id="" class="form-control" style="padding: 0px">
+                  <select name="category_id" id="" class="form-control @error('category_id')  is-invalid @enderror" style="padding: 0px">
                       <option value="">Select Category</option>
                       @foreach ($categories as $category)
                           <option value="{{ $category->id }}">{{ $category->title }}</option>

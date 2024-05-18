@@ -34,10 +34,10 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $validated = $request->validated(); 
-
+         
         $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'category') : null;
      
-        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
          
         Category::create($validated);
 
@@ -75,7 +75,7 @@ class CategoryController extends Controller
         }
 
         UploadFromHTMLHelper::deleteImages($category);
-        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
 
         $category->update($validated);
 

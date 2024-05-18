@@ -39,7 +39,7 @@ class ProductController extends Controller
 
         $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'product') : null;
      
-        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
         
         Product::create($validated);
 
@@ -78,7 +78,7 @@ class ProductController extends Controller
         }
 
         UploadFromHTMLHelper::deleteImages($product);
-        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
          
         $product->update($validated);
 
