@@ -7,11 +7,11 @@
 
 ### 1. Clone the repository
 
-`git clone https://github.com/rahmonov-otabek/task_laravel.git`
+`git clone https://github.com/rahmonov-otabek/task_inweb.git`
 
 ### 2. cd into the project 
 
-`cd task_laravel`
+`cd task_inweb`
 
 ### 3. Install composer dependencies 
 
