@@ -1,14 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
-use DOMDocument;
-use Illuminate\Support\Facades\Storage;
+ 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest; 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use App\Http\Requests\UpdateCategoryRequest;  
 use App\Models\Category;
 use App\Helpers\UploadHelper;
 use App\Helpers\UploadFromHTMLHelper;
@@ -41,8 +37,8 @@ class CategoryController extends Controller
 
         $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'category') : null;
      
-        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
-        
+        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+         
         Category::create($validated);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully'); 
@@ -79,8 +75,8 @@ class CategoryController extends Controller
         }
 
         UploadFromHTMLHelper::deleteImages($category);
-        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
-         
+        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+
         $category->update($validated);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully'); 

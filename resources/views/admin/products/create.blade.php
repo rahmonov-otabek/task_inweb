@@ -27,6 +27,16 @@
                   @error('title') <div class="invalid-feedback"> {{ $message }} </div> @enderror
                 </div>
                 <div class="form-group">
+                  <label>Category</label>
+                  <select name="category_id" id="" class="form-control" style="padding: 0px">
+                      <option value="">Select Category</option>
+                      @foreach ($categories as $category)
+                          <option value="{{ $category->id }}">{{ $category->title }}</option>
+                      @endforeach
+                  </select>
+                  @error('category_id') <div class="invalid-feedback"> {{ $message }} </div> @enderror
+              </div>
+                <div class="form-group">
                   <label>Image</label>
                   <input type="file" name="image" class="form-control @error('image')  is-invalid @enderror">
                   @error('image') <div class="invalid-feedback"> {{ $message }} </div> @enderror
@@ -44,7 +54,7 @@
                   @error('full_description') 
                       <div class="invalid-feedback">{{ $message }}</div> 
                   @enderror
-                </div>  
+                </div>   
               </div>
               <div class="card-footer text-right">
                 <button class="btn btn-primary mr-1" type="submit">Create</button> 

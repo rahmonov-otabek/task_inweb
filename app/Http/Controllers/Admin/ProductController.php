@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DOMDocument;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest; 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use App\Http\Requests\UpdateProductRequest;  
 use App\Models\Product;
+use App\Models\Category;
+use App\Helpers\UploadHelper;
+use App\Helpers\UploadFromHTMLHelper;
 
 class ProductController extends Controller
 {
@@ -27,7 +26,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
@@ -36,25 +36,10 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $validated = $request->validated(); 
- 
-        $full_description = $validated['full_description'];
 
-        $dom = new DOMDocument();
-        $dom->loadHTML($full_description,9);
-
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) {
-            $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]); 
-            $image_name = "/upload/" . time(). $key.'.png';
-            file_put_contents(public_path().$image_name,$data);
-
-            $img->removeAttribute('src');
-            $img->setAttribute('src',$image_name);
-        }
-        $full_description = $dom->saveHTML();
-
-        $validated['full_description'] = $full_description;
+        $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'product') : null;
+     
+        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
         
         Product::create($validated);
 
@@ -74,7 +59,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('admin.products.edit', compact('product'));
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -84,27 +70,16 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        $full_description = $validated['full_description'];
-
-        $dom = new DOMDocument();
-        $dom->loadHTML($full_description,9);
-
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) { 
-            if (strpos($img->getAttribute('src'),'data:image/') ===0) {
-                $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]); 
-                $image_name = "/upload/" . time(). $key.'.png';
-                file_put_contents(public_path().$image_name,$data);
-
-                $img->removeAttribute('src');
-                $img->setAttribute('src',$image_name);
-            }
+        if(!empty($validated['image'])) {  
+            UploadHelper::deleteOldImage($product->image, 'product');
+            $validated['image'] = UploadHelper::uploadImage($request, 'product');
+        }else{
+            $validated['image'] = $product->image;
         }
-        $full_description = $dom->saveHTML();
 
-        $validated['full_description'] = $full_description;
-
+        UploadFromHTMLHelper::deleteImages($product);
+        $validated['full_description'] = !empty($validated['full_description']) ? UploadFromHTMLHelper::storeImages($validated['full_description']) : null;
+         
         $product->update($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully'); 
@@ -114,24 +89,12 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
-    {
-        $dom= new DOMDocument();
-        $dom->loadHTML($product->full_description,9);
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) {
-            
-            $src = $img->getAttribute('src');
-            $path = Str::of($src)->after('/');
-
-
-            if (File::exists($path)) {
-                File::delete($path);
-               
-            }
-        }
+    { 
+        UploadHelper::deleteOldImage($product->image, 'product');
+        UploadFromHTMLHelper::deleteImages($product);
 
         $product->delete();
+        
         return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully'); 
     }
 }

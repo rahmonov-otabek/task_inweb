@@ -28,6 +28,15 @@
                       @error('title') <div class="invalid-feedback"> {{ $message }} </div> @enderror
                     </div>
                     <div class="form-group">
+                      <label>Category</label>
+                      <select name="category_id" id="" class="form-control" style="padding: 0px">
+                          @foreach ($categories as $category)
+                              <option {{ $product->category_id==$category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->title }}</option>
+                          @endforeach
+                      </select>
+                      @error('category_id') <div class="invalid-feedback"> {{ $message }} </div> @enderror
+                  </div> 
+                    <div class="form-group">
                       <label>Image</label>
                       <input type="file" name="image" class="form-control @error('image')  is-invalid @enderror">
                       <img src="#" alt="" width="150px">

@@ -20,11 +20,13 @@ class UploadHelper
 
     public static function deleteOldImage($imageName,  $table_name)
     {
-        $imagePath = 'storage/public/'.$table_name.'/'.$imageName;
+        if(isset($imageName)){
+            $imagePath = 'storage/public/'.$table_name.'/'.$imageName;
          
-        if(File::exists($imagePath)){
-            unlink($imagePath);
-        }
+            if(File::exists($imagePath)){
+                unlink($imagePath);
+            }
+        } 
     }
 
    
