@@ -44,8 +44,12 @@ Once your credentials are in the .env file, now you can migrate your database. T
 
 `php artisan db:seed`
 
+`php artisan storage:link`
+
 ### 10. Local development server
 To run a local development server you may run the following command. This will start a development server at **http://localhost:8000**.
+
+`npm run dev` 
 
 `php artisan serve`
 

@@ -23,7 +23,7 @@
                                 <th>Title</th><td>{{ $product->title }} </td>
                             </tr>
                             <tr>
-                                <th>Image</th><td><img src="{{ asset('storage/public/product/'.$product->image)}}" width="250px" alt=""></td>
+                                <th>Image</th><td><img src="{{ asset('storage/product/'.$product->image)}}" width="250px" alt=""></td>
                             </tr>
                             <tr>
                                 <th>Category</th><td>{{ $product->category->title }} </td>

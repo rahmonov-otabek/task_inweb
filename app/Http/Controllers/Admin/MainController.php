@@ -17,7 +17,7 @@ class MainController extends Controller
 
             $request->file('upload')->storeAs('public/ckeditor/upload',  $fileName);
             
-            $url = asset('storage/public/ckeditor/upload/'.$fileName);
+            $url = asset('storage/ckeditor/upload/'.$fileName);
             return response()->json(['fileName' => $fileName, 'uploaded'=> 1, 'url' => $url]);
         }
     }
