@@ -35,26 +35,7 @@ class PageController extends Controller
      */
     public function store(StorePageRequest $request)
     {
-        $validated = $request->validated(); 
- 
-        $full_description = $validated['full_description'];
-
-        $dom = new DOMDocument();
-        $dom->loadHTML($full_description,9);
-
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) {
-            $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]); 
-            $image_name = "/upload/" . time(). $key.'.png';
-            file_put_contents(public_path().$image_name,$data);
-
-            $img->removeAttribute('src');
-            $img->setAttribute('src',$image_name);
-        }
-        $full_description = $dom->saveHTML();
-
-        $validated['full_description'] = $full_description;
+        $validated = $request->validated();  
         
         Page::create($validated);
 
@@ -82,28 +63,7 @@ class PageController extends Controller
      */
     public function update(UpdatePageRequest $request, Page $page)
     {
-        $validated = $request->validated();
-
-        $full_description = $validated['full_description'];
-
-        $dom = new DOMDocument();
-        $dom->loadHTML($full_description,9);
-
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) { 
-            if (strpos($img->getAttribute('src'),'data:image/') ===0) {
-                $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]); 
-                $image_name = "/upload/" . time(). $key.'.png';
-                file_put_contents(public_path().$image_name,$data);
-
-                $img->removeAttribute('src');
-                $img->setAttribute('src',$image_name);
-            }
-        }
-        $full_description = $dom->saveHTML();
-
-        $validated['full_description'] = $full_description;
+        $validated = $request->validated(); 
 
         $page->update($validated);
 
@@ -114,23 +74,7 @@ class PageController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Page $page)
-    {
-        $dom= new DOMDocument();
-        $dom->loadHTML($page->full_description,9);
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $key => $img) {
-            
-            $src = $img->getAttribute('src');
-            $path = Str::of($src)->after('/');
-
-
-            if (File::exists($path)) {
-                File::delete($path);
-               
-            }
-        }
-
+    {  
         $page->delete();
         return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully'); 
     }

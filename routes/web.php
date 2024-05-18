@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,5 @@ Route::prefix('admin')->middleware(['auth'])->name('admin.')->group(function () 
     Route::resource('categories',CategoryController::class);
     Route::resource('products', ProductController::class);
 }); 
+
+Route::post('ckeditor/upload', [MainController::class, 'upload'])->name('ckeditor.upload');

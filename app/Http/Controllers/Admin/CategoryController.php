@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;  
 use App\Models\Category;
-use App\Helpers\UploadHelper;
-use App\Helpers\UploadFromHTMLHelper;
+use App\Helpers\UploadHelper; 
 
 class CategoryController extends Controller
 {
@@ -35,10 +34,8 @@ class CategoryController extends Controller
     {
         $validated = $request->validated(); 
          
-        $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'category') : null;
-     
-        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
-         
+        $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'category') : null; 
+
         Category::create($validated);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully'); 
@@ -72,10 +69,7 @@ class CategoryController extends Controller
             $validated['image'] = UploadHelper::uploadImage($request, 'category');
         }else{
             $validated['image'] = $category->image;
-        }
-
-        UploadFromHTMLHelper::deleteImages($category);
-        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
+        } 
 
         $category->update($validated);
 
@@ -87,9 +81,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     { 
-        UploadHelper::deleteOldImage($category->image, 'category');
-        UploadFromHTMLHelper::deleteImages($category);
-
+        UploadHelper::deleteOldImage($category->image, 'category'); 
+        
         $category->delete();
         
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully'); 

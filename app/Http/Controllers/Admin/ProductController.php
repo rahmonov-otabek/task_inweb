@@ -7,8 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;  
 use App\Models\Product;
 use App\Models\Category;
-use App\Helpers\UploadHelper;
-use App\Helpers\UploadFromHTMLHelper;
+use App\Helpers\UploadHelper; 
 
 class ProductController extends Controller
 {
@@ -37,10 +36,8 @@ class ProductController extends Controller
     {
         $validated = $request->validated(); 
 
-        $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'product') : null;
-     
-        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
-        
+        $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'product') : null; 
+
         Product::create($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully'); 
@@ -76,10 +73,7 @@ class ProductController extends Controller
         }else{
             $validated['image'] = $product->image;
         }
-
-        UploadFromHTMLHelper::deleteImages($product);
-        $validated['full_description'] = UploadFromHTMLHelper::storeImages($validated['full_description']);
-         
+        
         $product->update($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully'); 
@@ -91,7 +85,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     { 
         UploadHelper::deleteOldImage($product->image, 'product');
-        UploadFromHTMLHelper::deleteImages($product);
 
         $product->delete();
         
