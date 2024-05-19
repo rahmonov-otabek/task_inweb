@@ -7,9 +7,17 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;  
 use App\Models\Category;
 use App\Helpers\UploadHelper; 
+use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -25,11 +33,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $validated = $request->validated(); 
-         
-        $validated['image'] = !empty($validated['image']) ? UploadHelper::uploadImage($request, 'category') : null; 
-
-        $category = Category::create($validated);
+        $category = $this->categoryService->store($request);
 
         return response()->json($category, 201);
     }
@@ -47,16 +51,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validated = $request->validated();
-
-        if(!empty($validated['image'])) {  
-            UploadHelper::deleteOldImage($category->image, 'category');
-            $validated['image'] = UploadHelper::uploadImage($request, 'category');
-        }else{
-            $validated['image'] = $category->image;
-        } 
-
-        $category->update($validated);
+        $category = $this->categoryService->update($request, $category);
 
         return response()->json($category);
     }
