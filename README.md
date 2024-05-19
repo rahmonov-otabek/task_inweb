@@ -3,6 +3,8 @@
 ### Tech & Tools
 <img alt="PHP" src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white"/> <img alt="Laravel" src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"/> <img alt="Mysql" src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white"/> <img alt="Postman" src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"/>  
 
+## [API documentation in Postman](https://documenter.getpostman.com/view/22425394/2sA3QmDEe2) 
+
 ## Initial Setup
 
 ### 1. Clone the repository
@@ -56,3 +58,8 @@ To run a local development server you may run the following command. This will s
 ### User for admin panel 
 `email: 'admin@admin.com'` <br>
 `password: 'admin123`
+
+## Photos
+<img src="storage/github photo/2.png">
+<img src="storage/github photo/3.png">
+<img src="storage/github photo/4.png">
